@@ -1,6 +1,15 @@
 import sys
-import pandas as pd
-import matplotlib.pyplot as plt
+try:
+	import pandas as pd
+	import matplotlib.pyplot as plt
+except:
+	print("you need to pip install matplotlib, pandas first")
+	sys.exit(1)
+import signal, sys
+def sigint_handler(signal, frame):
+    print ('Ctrl+C not allowed')
+
+signal.signal(signal.SIGINT, sigint_handler)
 
 try:
 	data = pd.read_csv('data.csv')
@@ -34,11 +43,25 @@ def gradient_descent(theta1, theta0, points, L):
 
 theta1 = 0
 theta0 = 0
+theta0_prev = None
 L = 0.1
-epochs = 1000
+epochs = 10000
+try:
+	approx = int(sys.argv[1])
+	print("custom approximation set to:", approx)
+except:
+	print("no custom approximation, setting to standard 8")
+	approx = 8
 
 for i in range(epochs):
 	theta1, theta0 = gradient_descent(theta1, theta0, data, L)
+	if (i % 1000) == 0:
+		print(i, "/", epochs, "- thetas", theta1, theta0)
+	if theta0_prev != round(theta0, approx):
+		theta0_prev = round(theta0, approx)
+	else:
+		print("stopped at iteration", i, "- reached approximation to", approx,"th decimal place")
+		break
 
 
 #de-normalization
@@ -55,5 +78,7 @@ file.close()
 
 
 plt.scatter(x=data["km"], y=data["price"], color="black")
+plt.xlabel("km")
+plt.ylabel("price")
 plt.plot(list(range(20000, 250000)), [theta1 * x + theta0 for x in range(20000, 250000)], color="red")
 plt.savefig('plot.png')
