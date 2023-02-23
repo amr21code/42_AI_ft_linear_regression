@@ -15,6 +15,8 @@ mileage = input("please enter your mileage:")
 # print(theta1)
 
 try:
+	if int(mileage) < 0:
+		raise Exception()
 	prediction = theta1 * int(mileage) + theta0
 	if prediction < 0:
 		prediction = 0

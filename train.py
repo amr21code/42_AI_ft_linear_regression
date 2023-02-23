@@ -48,6 +48,8 @@ L = 0.1
 epochs = 10000
 try:
 	approx = int(sys.argv[1])
+	if approx < 1:
+		raise Exception
 	print("custom approximation set to:", approx)
 except:
 	print("no custom approximation, setting to standard 8")
