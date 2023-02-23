@@ -1,8 +1,13 @@
 import sys
 import math
-import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
+try:
+	import pandas as pd
+	import matplotlib.pyplot as plt
+	import numpy as np
+except:
+	print("you need to pip install matplotlib pandas numpy first")
+	sys.exit(1)
+
 
 try:
 	import theta

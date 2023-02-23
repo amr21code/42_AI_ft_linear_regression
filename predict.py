@@ -15,7 +15,10 @@ mileage = input("please enter your mileage:")
 # print(theta1)
 
 try:
-	print(theta1 * int(mileage) + theta0)
+	prediction = theta1 * int(mileage) + theta0
+	if prediction < 0:
+		prediction = 0
+	print("the predicted price to sell a car with", mileage, "km mileage is:", round(prediction,0))
 except:
 	print("wrong input")
 	sys.exit(1)

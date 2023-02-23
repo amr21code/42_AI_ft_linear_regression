@@ -3,7 +3,7 @@ try:
 	import pandas as pd
 	import matplotlib.pyplot as plt
 except:
-	print("you need to pip install matplotlib, pandas first")
+	print("you need to pip install matplotlib pandas first")
 	sys.exit(1)
 import signal, sys
 def sigint_handler(signal, frame):
