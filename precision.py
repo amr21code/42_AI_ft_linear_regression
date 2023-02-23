@@ -18,6 +18,10 @@ except:
 	print("input files not found - check if data.csv is present and run train.py first")
 	sys.exit(1)
 
+
+mean = np.mean(data["price"])
+plot_data = [mean] * len(data["km"])
+
 def calc_mse(data, mean):
 	mse = np.sum((data["price"] - mean) ** 2) / len(data)
 	return mse
@@ -27,6 +31,11 @@ def calc_mse_lin_reg(data, theta0, theta1):
 	squared_diff = (data["price"] - predictions) ** 2
 	mse = np.sum(squared_diff) / len(data)
 	return mse
+
+mse = calc_mse(data, mean)
+mse_lin_reg = calc_mse_lin_reg(data, theta0, theta1)
+# print(math.sqrt(mse_lin_reg))
+# print(mse)
 
 def gradient_descent(theta1, theta0, points, L):
 	theta1_gradient = 0
@@ -44,14 +53,6 @@ def gradient_descent(theta1, theta0, points, L):
 
 	return theta1, theta0
 
-mean = np.mean(data["price"])
-plot_data = [mean] * len(data["km"])
-
-mse = calc_mse(data, mean)
-mse_lin_reg = calc_mse_lin_reg(data, theta0, theta1)
-# print(math.sqrt(mse_lin_reg))
-# print(mse)
-# print(mean)
 
 #get max for normalization
 max_km = data_norm["km"].max()
