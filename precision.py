@@ -23,18 +23,18 @@ mean = np.mean(data["price"])
 plot_data = [mean] * len(data["km"])
 
 def calc_mse(data, mean):
-	mse = np.sum((data["price"] - mean) ** 2) / len(data)
+	mse = np.sum((data["price"] - mean) ** 2)
 	return mse
 
 def calc_mse_lin_reg(data, theta0, theta1):
 	predictions = theta1 * data["km"] + theta0
 	squared_diff = (data["price"] - predictions) ** 2
-	mse = np.sum(squared_diff) / len(data)
+	mse = np.sum(squared_diff)
 	return mse
 
 mse = calc_mse(data, mean)
 mse_lin_reg = calc_mse_lin_reg(data, theta0, theta1)
-# print(math.sqrt(mse_lin_reg))
+# print(mse_lin_reg)
 # print(mse)
 
 def gradient_descent(theta1, theta0, points, L):
@@ -72,20 +72,16 @@ for i in range(1000):
 	# print(math.sqrt(calc_mse_lin_reg(data, theta0_rmse, theta1_rmse)))
 	rmse_precision.append(math.sqrt(calc_mse_lin_reg(data, theta0_rmse * max_price, theta1_rmse * max_price / max_km)))
 
-plt.clf()
 plt.plot(np.array(rmse_precision))
 plt.savefig('prescision_rmse.png')
 
-#de-normalization
-theta1 *= max_price / max_km
-theta0 *= max_price
-
-r2 = (mse - mse_lin_reg) / mse
-print("The km/price relationship accounts for r^2", round(r2*100,2), "% of the variation")
-print("The Root Mean Squared Error is", round(math.sqrt(mse_lin_reg),0), "meaning that the prediction is in the range of +-", round(math.sqrt(mse_lin_reg),0), "of the price")
+r2 = 1 - mse_lin_reg / mse
+print("R-squared: The km/price relationship accounts for", round(r2*100,2), "% of the variation")
+print("The Root Mean Squared Error is", round(math.sqrt(mse_lin_reg / len(data["km"])),0), "meaning that the prediction is in the range of +-", round(math.sqrt(mse_lin_reg / len(data["km"])),0), "of the price")
 
 
 
+plt.clf()
 plt.scatter(x=data["km"], y=data["price"], color="black")
 plt.xlabel("km")
 plt.ylabel("price")
